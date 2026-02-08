@@ -11,7 +11,7 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
     status.innerText = "Gönderiliyor...";
 
     try {
-        const response = await fetch('https://portfolio-site-ox1v.onrender.com/send-email', {
+        const response = await fetch('https://tpcportfoy.onrender.com/send-email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
