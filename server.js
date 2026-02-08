@@ -23,7 +23,10 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
-    }
+    },
+    // Bu kısım bağlantı hatalarını daha net görmeni sağlar
+    debug: true,
+    logger: true
 });
 
 // Sunucu başlarken bağlantıyı test et
@@ -49,12 +52,21 @@ app.post('/send-email', (req, res) => {
     // Buradaki 'name', 'email' ve 'message' kelimeleri, 
     // script.js'de oluşturduğun formData objesinin içindeki anahtarlarla BİREBİR aynı olmalı.
 
+
     const mailOptions = {
-        from: email,
+        from: process.env.EMAIL_USER, // Gönderen her zaman senin onaylı hesabın olmalı
+        replyTo: email,              // Cevapla dediğinde kullanıcının maili çıksın
         to: process.env.EMAIL_USER,
         subject: `Portfolyo İletişim: ${name}`,
         text: `Gönderen: ${name} (${email})\n\nMesaj: ${message}`
     };
+
+    /* const mailOptions = {
+        from: email,
+        to: process.env.EMAIL_USER,
+        subject: `Portfolyo İletişim: ${name}`,
+        text: `Gönderen: ${name} (${email})\n\nMesaj: ${message}`
+    }; */
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
