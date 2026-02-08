@@ -17,12 +17,31 @@ app.get('/', (req, res) => {
 
 // Gmail bağlantı ayarları
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // 465 için true
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     }
 });
+
+// Sunucu başlarken bağlantıyı test et
+transporter.verify(function (error, success) {
+    if (error) {
+        console.log("Bağlantı hatası:", error);
+    } else {
+        console.log("Sunucu mail göndermeye hazır!");
+    }
+});
+
+/* const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+}); */
 
 // Formdan gelen isteği yakalayan bölüm
 app.post('/send-email', (req, res) => {
