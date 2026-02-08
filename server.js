@@ -1,7 +1,7 @@
+require('dotenv').config(); // En üstte olması Render'ın değişkenleri görmesini kolaylaştırır
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
-require('dotenv').config();
 
 const app = express();
 app.use(cors());
@@ -26,9 +26,11 @@ const transporter = nodemailer.createTransport({
     },
 
     tls: {
-        rejectUnauthorized: false // Bağlantı sertifika hatalarını es geçmek için
+        // Render gibi bulut ortamlarında sertifika hatalarını önler
+        rejectUnauthorized: false,
+        minVersion: "TLSv1.2"
     },
-    
+
     // Bu kısım bağlantı hatalarını daha net görmeni sağlar
     debug: true,
     logger: true
