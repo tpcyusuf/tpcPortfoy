@@ -18,12 +18,17 @@ app.get('/', (req, res) => {
 // Gmail bağlantı ayarları
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // 465 için true
+    port: 587,
+    secure: false, // 465 için true,  587 için false olmalı
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
+
+    tls: {
+        rejectUnauthorized: false // Bağlantı sertifika hatalarını es geçmek için
+    },
+    
     // Bu kısım bağlantı hatalarını daha net görmeni sağlar
     debug: true,
     logger: true
