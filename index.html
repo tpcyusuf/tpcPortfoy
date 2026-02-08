@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yusuf Topcu | Portfolyo</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <h1>Yusuf Topcu</h1>
@@ -25,8 +27,20 @@
         </div>
     </section>
 
+    <section id="contact">
+        <h2>İletişim</h2>
+        <form id="contact-form">
+            <input type="text" id="name" name="name" placeholder="Adınız" required>
+            <input type="email" id="email" name="email" placeholder="E-posta Adresiniz" required>
+            <textarea id="message" name="message" placeholder="Mesajınız" required></textarea>
+            <button type="submit">Gönder</button>
+        </form>
+        <p id="status-message"></p>
+    </section>
+
     <footer>
         <p>© 2026 Yusuf Topcu - Tüm Hakları Saklıdır.</p>
     </footer>
 </body>
+
 </html>

@@ -1,10 +1,10 @@
 document.getElementById('contact-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const formData = {
-        name: document.getElementById('user_name').value,
-        email: document.getElementById('user_email').value,
-        message: document.getElementById('message').value
+        name: document.getElementById('name').value,    // id="name" olanı al
+        email: document.getElementById('email').value,  // id="email" olanı al
+        message: document.getElementById('message').value // id="message" olanı al
     };
 
     const status = document.getElementById('status-message');

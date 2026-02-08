@@ -19,6 +19,8 @@ const transporter = nodemailer.createTransport({
 // Formdan gelen isteği yakalayan bölüm
 app.post('/send-email', (req, res) => {
     const { name, email, message } = req.body;
+    // Buradaki 'name', 'email' ve 'message' kelimeleri, 
+    // script.js'de oluşturduğun formData objesinin içindeki anahtarlarla BİREBİR aynı olmalı.
 
     const mailOptions = {
         from: email,
