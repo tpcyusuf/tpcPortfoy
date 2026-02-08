@@ -17,6 +17,15 @@ app.get('/', (req, res) => {
 
 // Gmail bağlantı ayarları
 const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
+
+/* const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
     secure: false, // 465 için true,  587 için false olmalı
@@ -34,7 +43,7 @@ const transporter = nodemailer.createTransport({
     // Bu kısım bağlantı hatalarını daha net görmeni sağlar
     debug: true,
     logger: true
-});
+}); */
 
 // Sunucu başlarken bağlantıyı test et
 transporter.verify(function (error, success) {
@@ -45,20 +54,11 @@ transporter.verify(function (error, success) {
     }
 });
 
-/* const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-}); */
-
 // Formdan gelen isteği yakalayan bölüm
 app.post('/send-email', (req, res) => {
     const { name, email, message } = req.body;
     // Buradaki 'name', 'email' ve 'message' kelimeleri, 
     // script.js'de oluşturduğun formData objesinin içindeki anahtarlarla BİREBİR aynı olmalı.
-
 
     const mailOptions = {
         from: process.env.EMAIL_USER, // Gönderen her zaman senin onaylı hesabın olmalı
@@ -77,7 +77,7 @@ app.post('/send-email', (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log(error);
+            console.error("Gönderim Hatası:", error);
             return res.status(500).send("Mail gönderilemedi.");
         }
         res.status(200).send('Başarılı!');
