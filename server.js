@@ -7,6 +7,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Sunucuya, ana dizindeki statik dosyaları (html, css, js) sunmasını söyler
+app.use(express.static(__dirname));
+
+// Ana sayfaya gidildiğinde index.html dosyasını gönderir
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
 // Gmail bağlantı ayarları
 const transporter = nodemailer.createTransport({
     service: 'gmail',
