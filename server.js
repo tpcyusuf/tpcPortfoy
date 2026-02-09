@@ -18,17 +18,17 @@ app.get('/', (req, res) => {
 app.post('/send-email', async (req, res) => {
     const { name, email, message } = req.body;
 
-    try {
-        // Brevo SMTP API isteği
+  try {
         await axios.post('https://api.brevo.com/v3/smtp/email', {
-            sender: { name: "Portfolyo İletişim", email: "ysftpwebsite@gmail.com" }, // Brevo'ya kayıtlı mailin
-            to: [{ email: "ysftpwebsite@gmail.com" }], // Mesajın gideceği adres
-            replyTo: { email: email, name: name }, // Cevapla dendiğinde formdaki kişinin maili çıkar
+            sender: { name: "Portfolyo İletişim", email: "ysftpwebsite@gmail.com" },
+            to: [{ email: "ysftpwebsite@gmail.com" }],
+            replyTo: { email: email, name: name },
             subject: `Yeni Portfolyo Mesajı: ${name}`,
-            textContent: `Gönderen: ${name} (${email})\n\nMesaj: ${message}`
+            textContent: `Gönderen: ${name} (${email})\n\nMesaj: ${message}`,
+            htmlContent: `<h3>Yeni Mesaj</h3><p><strong>Gönderen:</strong> ${name}</p><p><strong>E-posta:</strong> ${email}</p><p><strong>Mesaj:</strong> ${message}</p>`
         }, {
             headers: {
-                'api-key': process.env.BREVO_API_KEY, // Render panelindeki API anahtarı
+                'api-key': process.env.BREVO_API_KEY,
                 'Content-Type': 'application/json'
             }
         });
