@@ -22,7 +22,7 @@ app.post('/send-email', async (req, res) => {
         // server.js içindeki post isteğinin içi
         await axios.post('https://api.brevo.com/v3/smtp/email', {
             // Name kısmını silebiliriz veya paneldekiyle aynı yapmalıyız
-            sender: { email: "ysftpwebsite@gmail.com" },
+            sender: { name: "Portfolyo", email: "ysftpwebsite@gmail.com" },
             to: [{ email: "ysftpwebsite@gmail.com" }],
             replyTo: { email: email, name: name },
             subject: `Portfolyo: ${name}`,
