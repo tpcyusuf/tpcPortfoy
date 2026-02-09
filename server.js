@@ -20,7 +20,7 @@ app.post('/send-email', async (req, res) => {
 
   try {
         await axios.post('https://api.brevo.com/v3/smtp/email', {
-            sender: { name: "Portfolyo İletişim", email: "ysftpwebsite@gmail.com" },
+            sender: { name: "Portfolyo", email: "ysftpwebsite@gmail.com" }, // Name kısmında sadece metin olsun
             to: [{ email: "ysftpwebsite@gmail.com" }],
             replyTo: { email: email, name: name },
             subject: `Yeni Portfolyo Mesajı: ${name}`,
