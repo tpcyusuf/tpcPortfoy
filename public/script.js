@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Form inputlarında herhangi bir değişiklik olduğunda uyarıyı göster, DOMAIN AKTİF OLUNCA kaldir ve yorum satiri yap
         formNotice.style.display = "block";
         statusMessage.textContent =
-            "Mail gönderimi şu an devre dışı. Domain doğrulandıktan sonra aktif olacak.";
+            " Mail gönderimi şu an yapım aşamasındadır, en kısa sürede yayına alınacaktır. Anlayışınız için teşekkür ederiz";
         // Form inputlarında herhangi bir değişiklik olduğunda uyarıyı göster, DOMAIN AKTİF OLUNCA kaldir ve yorum satiri yap
 
 
