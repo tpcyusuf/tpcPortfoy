@@ -1,48 +1,48 @@
 require('dotenv').config();
 const express = require('express');
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer'); // resend yerine nodemailer
 const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Middleware Ayarları
 app.use(cors());
 app.use(express.json());
-
-// ÖNEMLİ: Statik dosyaların 'public' klasöründe olduğunu belirttik
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Ana sayfaya girildiğinde index.html'i gönder
-app.get('/', (req, res) => {
+app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Mail Gönderme Rotası
+
+// Postacı (Gmail) Ayarı
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
 app.post('/send-email', async (req, res) => {
     const { name, email, message } = req.body;
 
-    try {
-        const data = await resend.emails.send({
-            from: 'onboarding@resend.dev',
-            to: 'ysftpwebsite@gmail.com', //
-            subject: `Portfolyo İletişim: ${name}`,
-            replyTo: email,
-            html: `
-                <h3>Yeni İletişim Formu Mesajı</h3>
-                <p><strong>Gönderen:</strong> ${name}</p>
-                <p><strong>E-posta:</strong> ${email}</p>
-                <p><strong>Mesaj:</strong> ${message}</p>
-            `
-        });
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: process.env.EMAIL_USER,
+        replyTo: email,
+        subject: `Portfolyo İletişim: ${name}`,
+        text: `Mesaj: ${message}\n\nİletişim: ${email}`
+    };
 
-        res.status(200).json({ success: true, id: data.id });
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ success: true, message: "Mesaj ulaştı!" });
     } catch (error) {
-        console.error("Resend Hatası:", error);
+        console.error("Nodemailer Hatası:", error);
         res.status(500).json({ success: false, error: error.message });
     }
 });
+
 
 
 const PORT = process.env.PORT || 5000;
