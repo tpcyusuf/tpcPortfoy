@@ -28,5 +28,11 @@ app.post('/send-email', async (req, res) => {
     }
 });
 
+
+// Diğer kodların altına, app.listen'den önce ekle
+app.get('/', (req, res) => {
+    res.send('Backend Sunucusu Aktif ve Çalışıyor! 🚀');
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Sunucu ${PORT} portunda hazır.`));
