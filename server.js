@@ -42,6 +42,10 @@ app.post("/send-email", async (req, res) => {
                 Name: "Owner",
               },
             ],
+            ReplyTo: {
+              Email: email,   // formu dolduran kişi
+              Name: name,
+            },
             Subject: "Yeni iletişim formu",
             TextPart: `
 İsim: ${name}
