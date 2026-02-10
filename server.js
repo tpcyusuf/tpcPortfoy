@@ -14,6 +14,11 @@ app.use(express.json());
 // ÖNEMLİ: Statik dosyaların 'public' klasöründe olduğunu belirttik
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Ana sayfaya girildiğinde index.html'i gönder
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Mail Gönderme Rotası
 app.post('/send-email', async (req, res) => {
     const { name, email, message } = req.body;
@@ -39,10 +44,6 @@ app.post('/send-email', async (req, res) => {
     }
 });
 
-// Ana sayfaya girildiğinde index.html'i gönder
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Sunucu ${PORT} portunda hazır.`));
