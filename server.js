@@ -2,23 +2,34 @@ require('dotenv').config();
 const express = require('express');
 const { Resend } = require('resend');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Middleware Ayarları
 app.use(cors());
 app.use(express.json());
 
+// ÖNEMLİ: Statik dosyaların 'public' klasöründe olduğunu belirttik
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Mail Gönderme Rotası
 app.post('/send-email', async (req, res) => {
     const { name, email, message } = req.body;
 
     try {
         const data = await resend.emails.send({
-            from: 'onboarding@resend.dev', // Başlangıçta bunu kullan, domain onayına gerek yok
-            to: 'ysftpwebsite@gmail.com',  // Mesajın geleceği adres
+            from: 'onboarding@resend.dev',
+            to: 'ysftpwebsite@gmail.com', //
             subject: `Portfolyo İletişim: ${name}`,
-            reply_to: email,               // Yanıtla dediğinde kullanıcıya gider
-            html: `<strong>Gönderen:</strong> ${name} <br> <strong>Mesaj:</strong> ${message}`
+            replyTo: email,
+            html: `
+                <h3>Yeni İletişim Formu Mesajı</h3>
+                <p><strong>Gönderen:</strong> ${name}</p>
+                <p><strong>E-posta:</strong> ${email}</p>
+                <p><strong>Mesaj:</strong> ${message}</p>
+            `
         });
 
         res.status(200).json({ success: true, id: data.id });
@@ -28,10 +39,9 @@ app.post('/send-email', async (req, res) => {
     }
 });
 
-
-// Diğer kodların altına, app.listen'den önce ekle
-app.get('/', (req, res) => {
-    res.send('Backend Sunucusu Aktif ve Çalışıyor! 🚀');
+// Ana sayfaya girildiğinde index.html'i gönder
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
