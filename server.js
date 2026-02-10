@@ -17,7 +17,11 @@ app.get("/test", (req, res) => {
 
 app.post("/send-email", async (req, res) => {
   try {
+    console.log("SEND EMAIL ENDPOINT ÇALIŞTI");
+
     const { name, email, message } = req.body;
+
+    console.log("ENV KEY:", process.env.MAILJET_API_KEY ? "VAR" : "YOK");
 
     const response = await fetch("https://api.mailjet.com/v3.1/send", {
       method: "POST",
@@ -32,41 +36,27 @@ app.post("/send-email", async (req, res) => {
       body: JSON.stringify({
         Messages: [
           {
-            From: {
-              Email: process.env.EMAIL_TO,
-              Name: "Website Contact",
-            },
-            To: [
-              {
-                Email: process.env.EMAIL_TO,
-                Name: "Owner",
-              },
-            ],
-            ReplyTo: {
-              Email: email,   // formu dolduran kişi
-              Name: name,
-            },
-            Subject: "Yeni iletişim formu",
-            TextPart: `
-İsim: ${name}
-Email: ${email}
-Mesaj: ${message}
-            `,
+            From: { Email: process.env.EMAIL_TO, Name: "Website Contact" },
+            To: [{ Email: process.env.EMAIL_TO, Name: "Owner" }],
+            Subject: "Test",
+            TextPart: "TEST MESAJI",
           },
         ],
       }),
     });
 
-    if (!response.ok) {
-      const text = await response.text();
-      return res.status(500).send(text);
-    }
+    console.log("MAILJET STATUS:", response.status);
+
+    const text = await response.text();
+    console.log("MAILJET RESPONSE:", text);
 
     res.send("OK");
   } catch (err) {
+    console.error("HATA:", err);
     res.status(500).send("Mail gönderilemedi");
   }
 });
+
 
 
 const PORT = process.env.PORT || 3000;
