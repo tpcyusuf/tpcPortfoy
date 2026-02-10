@@ -1,63 +1,52 @@
-document.getElementById("contact-form").addEventListener("submit", async function(e) {
-  e.preventDefault(); // SAYFA YENİLENMESİN
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("contact-form");
+    const statusMessage = document.getElementById("status-message");
+    const formNotice = document.getElementById("formNotice");
 
-  const formData = {
-    name: document.querySelector('[name="name"]').value,
-    email: document.querySelector('[name="email"]').value,
-    message: document.querySelector('[name="message"]').value,
-  };
-
-  const response = await fetch("https://tpcwebsite-tzc06coa.b4a.run/send-email", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData),
-  });
-
-  if (response.ok) {
-    alert("Mesaj gönderildi ✅");
-    window.location.reload(); // ANA SAYFAYA DÖN
-  } else {
-    alert("Hata oluştu ❌");
-  }
-});
-
-
-
-
-
-
-/* document.getElementById('contact-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        message: document.getElementById('message').value
-    };
-
-    const status = document.getElementById('status-message');
-    status.innerText = "Gönderiliyor...";
-
-    try {
-        const response = await fetch('/send-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
+    // Form inputlarında herhangi bir değişiklik olduğunda uyarıyı göster, DOMAIN AKTİF OLUNCA kaldir ve yorum satiri yap
+    const inputs = form.querySelectorAll("input, textarea");
+    inputs.forEach((input) => {
+        input.addEventListener("input", () => {
+            formNotice.style.display = "block"; // uyarıyı göster
         });
+    });
+    // Form inputlarında herhangi bir değişiklik olduğunda uyarıyı göster, DOMAIN AKTİF OLUNCA kaldir ve yorum satiri yap
 
+
+    // --- Gönder tuşu devre dışı: Domain aktif olana kadar ---
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Sayfa yenilenmesin
+
+
+        // Form inputlarında herhangi bir değişiklik olduğunda uyarıyı göster, DOMAIN AKTİF OLUNCA kaldir ve yorum satiri yap
+        formNotice.style.display = "block";
+        statusMessage.textContent =
+            "Mail gönderimi şu an devre dışı. Domain doğrulandıktan sonra aktif olacak.";
+        // Form inputlarında herhangi bir değişiklik olduğunda uyarıyı göster, DOMAIN AKTİF OLUNCA kaldir ve yorum satiri yap
+
+
+
+        /* 
+        --- DOMAIN AKTİF OLUNCA KULLANACAĞIN GERÇEK GÖNDERİM KODU ---
+        
+        const formData = {
+          name: document.querySelector('[name="name"]').value,
+          email: document.querySelector('[name="email"]').value,
+          message: document.querySelector('[name="message"]').value,
+        };
+    
+        const response = await fetch("https://tpcwebsite-tzc06coa.b4a.run/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+    
         if (response.ok) {
-            status.innerText = "Mesajınız başarıyla iletildi!";
-            document.getElementById('contact-form').reset();
-
-            setTimeout(() => {
-                window.location.href = "/";
-            }, 1500);
+          alert("Mesaj gönderildi ✅");
+          window.location.reload(); // ANA SAYFAYA DÖN
         } else {
-            const text = await response.text();
-            status.innerText = "Hata: " + text;
+          alert("Hata oluştu ❌");
         }
-    } catch (err) {
-        status.innerText = "Sunucuya bağlanılamadı.";
-    }
+        */
+    });
 });
- */
