@@ -1,62 +1,36 @@
-import express from "express";
-import fetch from "node-fetch";
-import dotenv from "dotenv";
+require("dotenv").config();
 
-dotenv.config();
+const express = require("express");
+const cors = require("cors");
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
-app.post("/contact", async (req, res) => {
-  const { name, email, message } = req.body;
+app.get("/", (req, res) => {
+  res.send("Server çalışıyor ✅");
+});
 
+// TEST endpoint
+app.get("/test", (req, res) => {
+  res.send("API OK 🚀");
+});
+
+// MAIL endpoint (şimdilik boş – çökmesin diye)
+app.post("/send-email", async (req, res) => {
   try {
-    const response = await fetch("https://api.mailjet.com/v3.1/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Basic " +
-          Buffer.from(
-            `${process.env.MAILJET_API_KEY}:${process.env.MAILJET_SECRET_KEY}`
-          ).toString("base64"),
-      },
-      body: JSON.stringify({
-        Messages: [
-          {
-            From: {
-              Email: "painvenom@gmail.com",
-              Name: "Website Contact",
-            },
-            To: [
-              {
-                Email: process.env.EMAIL_TO,
-                Name: "Site Owner",
-              },
-            ],
-            Subject: "Yeni İletişim Formu",
-            TextPart: `
-İsim: ${name}
-Email: ${email}
-Mesaj: ${message}
-            `,
-          },
-        ],
-      }),
-    });
-
-    if (response.ok) {
-      res.send("Mesaj başarıyla gönderildi ✅");
-    } else {
-      const err = await response.text();
-      res.status(500).send("Mail gönderilemedi ❌ " + err);
-    }
-  } catch (error) {
-    res.status(500).send("Sunucu hatası ❌");
+    console.log("Gelen veri:", req.body);
+    res.status(200).send("Mail endpoint çalışıyor");
+  } catch (err) {
+    console.error("MAIL HATA:", err);
+    res.status(500).send("Mail gönderilemedi");
   }
 });
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log("Server çalışıyor → http://localhost:" + PORT);
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log("Server çalışıyor → PORT:", PORT);
 });
