@@ -15,13 +15,28 @@ app.get('/', (req, res) => {
 
 
 // Postacı (Gmail) Ayarı
-const transporter = nodemailer.createTransport({
+/* const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     }
+}); */
+
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, 
+  auth: {
+    user: process.env.EMAIL_USER, // process.env eklemeyi unutma
+    pass: process.env.EMAIL_PASS,
+  },
+  // ÇÖZÜM BURASI:
+  connectionTimeout: 10000, // Opsiyonel: Bağlantı zaman aşımı
+  family: 4 // IPv4 kullanmaya zorlar
 });
+
 
 app.post('/send-email', async (req, res) => {
     const { name, email, message } = req.body;
