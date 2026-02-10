@@ -1,4 +1,32 @@
-document.getElementById('contact-form').addEventListener('submit', async (e) => {
+document.getElementById("contact-form").addEventListener("submit", async function(e) {
+  e.preventDefault(); // SAYFA YENİLENMESİN
+
+  const formData = {
+    name: document.querySelector('[name="name"]').value,
+    email: document.querySelector('[name="email"]').value,
+    message: document.querySelector('[name="message"]').value,
+  };
+
+  const response = await fetch("https://tpcwebsite-tzc06coa.b4a.run/send-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  });
+
+  if (response.ok) {
+    alert("Mesaj gönderildi ✅");
+    window.location.reload(); // ANA SAYFAYA DÖN
+  } else {
+    alert("Hata oluştu ❌");
+  }
+});
+
+
+
+
+
+
+/* document.getElementById('contact-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = {
@@ -32,3 +60,4 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
         status.innerText = "Sunucuya bağlanılamadı.";
     }
 });
+ */
