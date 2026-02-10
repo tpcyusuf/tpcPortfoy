@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 }); */
 
 
-const transporter = nodemailer.createTransport({
+/* const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
   secure: true, 
@@ -35,6 +35,21 @@ const transporter = nodemailer.createTransport({
   // ÇÖZÜM BURASI:
   connectionTimeout: 10000, // Opsiyonel: Bağlantı zaman aşımı
   family: 4 // IPv4 kullanmaya zorlar
+}); */
+
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,               // 465 yerine 587 kullanıyoruz
+  secure: false,           // 587 portu için burası false olmalı
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false // Sunucu sertifikası hatalarını es geçmek için (Render'da gerekebilir)
+  },
+  family: 4                // Önceki hatanı (IPv6) çözen kritik satır
 });
 
 
