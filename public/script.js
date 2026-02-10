@@ -21,8 +21,10 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
             status.innerText = "Mesajınız başarıyla iletildi!";
             document.getElementById('contact-form').reset();
         } else {
-            status.innerText = "Bir hata oluştu.";
+            const text = await response.text();
+            status.innerText = "Hata: " + text;
         }
+
     } catch (err) {
         status.innerText = "Sunucuya bağlanılamadı.";
     }
