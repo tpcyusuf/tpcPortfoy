@@ -58,5 +58,5 @@ Mesaj: ${message}
 });
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log("Server çalışıyor");
+    console.log("Server çalışıyor → http://localhost:" + PORT);
 });
